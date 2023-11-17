@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Churn Prediction</title>
+    <!-- Add Bootstrap CDN for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Churn Prediction</h1>
+        <p class="lead">Enter customer data to predict churn.</p>
+    </div>
+
+    <form id="churnForm">
+        <!-- Add input fields for features -->
+        <!-- Example: -->
+        <div class="form-group">
+            <label for="feature1">Feature 1:</label>
+            <input type="text" class="form-control" id="feature1" name="feature1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="feature2">Feature 2:</label>
+            <input type="text" class="form-control" id="feature2" name="feature2" required>
+        </div>
+
+        <!-- Add more features as needed -->
+
+        <button type="button" class="btn btn-primary" onclick="predictChurn()">Predict</button>
+    </form>
+
+    <hr>
+
+    <h2>Prediction Results:</h2>
+    <p id="randomForestResult">Random Forest Prediction: N/A</p>
+    <p id="mlpResult">MLP Prediction: N/A</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    function predictChurn() {
+        // Fetch form data
+        const formData = new FormData(document.getElementById('churnForm'));
+
+        // Send a POST request to the Flask server
+        fetch('/predict', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update result elements with prediction results
+            document.getElementById('randomForestResult').innerText = `Random Forest Prediction: ${data['Random Forest Prediction']}`;
+            document.getElementById('mlpResult').innerText = `MLP Prediction: ${data['MLP Prediction']}`;
+        });
+    }
+</script>
+
+</body>
+</html>
